@@ -22,10 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+
 const DOCUMENT_KEY_SIZE = 6;
 
-const MAX_DOCUMENT_SIZE = 400000;
-const DOCUMENT_EXPIRE_TTL = 86400 * 180;
+const MAX_DOCUMENT_SIZE = 5000000;
+//const DOCUMENT_EXPIRE_TTL = 86400 * 180;
 
 class HTTPError extends Error {
   constructor(status, message) {
@@ -34,12 +35,21 @@ class HTTPError extends Error {
   }
 }
 
-function generateId() {
-  let id = "";
-  const keyspace = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const randOf = (collection) => {
+  return () => {
+    return collection[Math.floor(Math.random() * collection.length)];
+  };
+};
+const randVowel = randOf('aeiou');
+const randConsonant = randOf('bcdfghjklmnpqrstvwxyz');
 
-  for (let idx = 0; idx < DOCUMENT_KEY_SIZE; idx++) {
-    id += keyspace.charAt(Math.random() * keyspace.length);
+function generateId() {
+
+  let id = "";
+  const start = Math.round(Math.random());
+
+  for (let i = 0; i < 10; i++) {
+    id += (i % 2 == start) ? randConsonant() : randVowel();
   }
 
   return id;
@@ -72,11 +82,11 @@ async function postDocuments(request) {
   const id = generateId();
   const content = await request.text();
 
-  await STORAGE.put(`documents:${id}`, content, { expirationTtl: DOCUMENT_EXPIRE_TTL });
+  await STORAGE.put(`documents:${id}`, content);
 
   const json = {
     key: id,
-    url: `https://starb.in/${id}`,
+    url: `https://haste.erisa.uk/${id}`,
   };
   const headers = {
     "Content-Type": "application/json; charset=UTF-8",
