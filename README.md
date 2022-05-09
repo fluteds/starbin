@@ -1,8 +1,14 @@
-# Starbin
+# Starbin-pages
 
-A hastebin-compatible paste site running on Cloudflare Workers.
+A hastebin-compatible paste site running on Cloudflare Pages.
 
-# TODO
+Forked from https://github.com/LostLuma/starbin
 
-I did not invest any time into creating my own frontend yet, all static
-assets are copied from the original [haste-server](https://github.com/seejohnrun/haste-server).
+Changes made:
+- Added phonetic ID generation from haste-server
+- Migrated from Workers to Pages
+
+To deploy: Fork repo, deploy as a new Pages project and map a KV namespace called `STORAGE`.  
+It's that simple. 🎉
+
+All static assets are copied from the original [haste-server](https://github.com/seejohnrun/haste-server).
